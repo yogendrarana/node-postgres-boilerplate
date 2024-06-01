@@ -27,12 +27,24 @@ This is a boilerplate project for building a Node.js application using Express, 
 2. Install dependencies
     ```bash
     yarn or yarn install
+
 3. Setup environment variables
     ```bash
     PORT=8000
     ACCESS_TOKEN_SECRET=accesstokensecret
     REFRESH_TOKEN_SECRET=refreshtokensecret
     DB_URL=postgresql://postgres:password@localhost:5432/mydatabase
+
+4. Database and ORM
+    ```bash
+    # Generate migration files
+    yarn db:generate
+
+    # Push migrations to the database
+    yarn db:push
+
+    # Access the database studio in your browser
+    yarn db:studio
 
 ## Contributing
 
