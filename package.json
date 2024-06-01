@@ -1,9 +1,28 @@
 {
-  "name": "express-postgres-drizzle",
+  "name": "node-postgres-boilerplate",
   "version": "1.0.0",
-  "description": "",
+  "description": "A boilerplate project for Node.js, Express, PostgreSQL, Drizzle ORM, and Vitest",
   "type": "module",
   "main": "dist/app.js",
+  "license": "MIT",
+  "author": {
+    "name": "Yogendra Rana",
+    "email": "yogendrarana4321@gmail.com",
+    "website": "https://yogendrarana.vercel.app/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yogendrarana/node-postgres-boilerplate.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "postgresql",
+    "drizzle",
+    "orm",
+    "vitest",
+    "boilerplate"
+  ],
   "scripts": {
     "compile": "tsc",
     "build": "npx tsc",
@@ -14,9 +33,6 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio --port 4000"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",

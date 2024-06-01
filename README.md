@@ -33,3 +33,11 @@ This is a boilerplate project for building a Node.js application using Express, 
     ACCESS_TOKEN_SECRET=accesstokensecret
     REFRESH_TOKEN_SECRET=refreshtokensecret
     DB_URL=postgresql://postgres:password@localhost:5432/mydatabase
+
+## Contributing
+
+Feel free to submit issues, fork the repository, and send pull requests. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the MIT License.
