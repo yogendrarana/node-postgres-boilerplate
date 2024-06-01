@@ -4,7 +4,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 
 const connectionString =
     process.env.ENV === "production" ?
-        process.env.DATABASE_URL :
+        process.env.DB_URL :
         'postgresql://postgres:password@localhost:5432/hobby';
 
 // create pool connection
