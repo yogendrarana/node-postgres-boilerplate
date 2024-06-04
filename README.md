@@ -9,6 +9,9 @@ This is a boilerplate project for building a Node.js application using Express, 
 - **PostgreSQL**: Powerful, open-source object-relational database system.
 - **Drizzle ORM**: Lightweight, TypeScript-first ORM for SQL databases.
 - **Vitest**: Fast unit test framework powered by Vite.
+- **ESLint**: A linting utility for JavaScript/TypeScript code style and quality.
+- **Swagger**: API documentation tool.
+- **Morgan**: Request logging middleware.
 
 ## Getting Started
 
