@@ -31,7 +31,8 @@
     "dev": "concurrently \"npx tsc -w\" \"sleep 3 && nodemon dist/server.js\"",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio --port 4000"
+    "db:studio": "drizzle-kit studio --port 4000",
+    "prepare": "husky"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -58,6 +59,7 @@
     "drizzle-kit": "^0.21.1",
     "eslint": "9.x",
     "globals": "^15.3.0",
+    "husky": "^9.0.11",
     "nodemon": "^3.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",

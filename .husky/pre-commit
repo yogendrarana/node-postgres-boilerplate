@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+echo "Running ESLint..."
+yarn run eslint
+if [ $? -ne 0 ]; then
+  echo "ESLint failed. Aborting commit."
+  exit 1
+fi
+
+# chmod +x .husky/pre-commit
