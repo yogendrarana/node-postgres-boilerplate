@@ -1,8 +1,8 @@
-import { NextFunction, Response } from "express";
+import { Response } from "express";
 import { asyncHandler } from "../util/asyncHandler.js";
 import { AuthenticatedRequest } from "../types/index.js";
 
-export const getDashboardData = asyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const getDashboardData = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     console.log(req.user)
 
     res.status(200).json({

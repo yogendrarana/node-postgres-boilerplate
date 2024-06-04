@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
-const ErrorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
+const ErrorMiddleware = (err: any, req: Request, res: Response) => {
 
     err.status = err.status || 500;
     err.message = err.message || "Internal Server Error";

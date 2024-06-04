@@ -1,7 +1,4 @@
-import createApp from "../../app.js"
 import { expect, describe, it } from "vitest"
-
-const app = createApp()
 
 describe("user", () => {
     describe("user test", () => {
