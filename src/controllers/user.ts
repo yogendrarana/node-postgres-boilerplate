@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import { db } from '../config/db/db.js';
-import ErrorHandler from "../util/errorHandler.js";
-import { asyncHandler } from "../util/asyncHandler.js";
+import ErrorHandler from "../handlers/errorHandler.js";
+import { asyncHandler } from "../handlers/asyncHandler.js";
 import * as tokenService from '../services/token.js'
 import { userSchema } from '../config/db/schema/user.js';
 import { NextFunction, Request, Response } from "express";

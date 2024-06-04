@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { eq } from "drizzle-orm";
 import { db } from "../config/db/db.js";
-import ErrorHandler from "../util/errorHandler.js";
+import ErrorHandler from "../handlers/errorHandler.js";
 import { NextFunction, Request, Response } from "express";
 import { userSchema } from "../config/db/schema/user.js";
 

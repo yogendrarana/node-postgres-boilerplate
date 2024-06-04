@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { asyncHandler } from "../util/asyncHandler.js";
+import { asyncHandler } from "../handlers/asyncHandler.js";
 import { AuthenticatedRequest } from "../types/index.js";
 
 export const getDashboardData = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
