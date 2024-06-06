@@ -6,7 +6,7 @@ import { asyncHandler } from "../handlers/asyncHandler.js";
 import { NextFunction, Request, Response } from "express";
 import { userSchema } from "../config/db/schema/user.js";
 import { tokenSchema } from "../config/db/schema/token.js";
-import { createAccessToken, createRefreshToken } from "../services/token.js";
+import { createAccessToken, createRefreshToken } from "../helpers/token.js";
 
 
 // issue new access token

@@ -2,8 +2,8 @@ import express from "express"
 const router = express.Router();
 
 // import controllers and middlewares
-import * as roleMiddleware from "../middlewares/roleMiddleware.js";
-import * as authMiddleware from "../middlewares/authMiddleware.js";
+import * as roleMiddleware from "../middlewares/role.js";
+import * as authMiddleware from "../middlewares/auth.js";
 import * as adminController from "../controllers/admin.js";
 
 // define routes

@@ -10,8 +10,8 @@ import tokenRoutes from "./routes/token.js";
 import adminRoutes from "./routes/admin.js";
 
 // import middlewares
-import ErrorMiddleware from "./middlewares/errorMiddleware.js";
-import morganMiddleware from "./middlewares/morganMiddleware.js";
+import ErrorMiddleware from "./middlewares/error.js";
+import morganMiddleware from "./middlewares/morgan.js";
 
 export default function createApp() {
     // express app
@@ -31,8 +31,8 @@ export default function createApp() {
     // middleware
     app.use(express.json())
     app.use(cookieParser())
-    app.use(express.urlencoded({ extended: true }))
     app.use(morganMiddleware)
+    app.use(express.urlencoded({ extended: true }))
 
     // routes
     app.get('/', (req, res) => res.send('Welcome to Node JS!'))
