@@ -5,9 +5,7 @@ import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 
 // import routes
-import userRoutes from "./routes/user.js";
-import tokenRoutes from "./routes/token.js";
-import adminRoutes from "./routes/admin.js";
+import routers from "./routes/index.js";
 
 // import middlewares
 import ErrorMiddleware from "./middlewares/error.js";
@@ -36,9 +34,7 @@ export default function createApp() {
 
     // routes
     app.get('/', (req, res) => res.send('Welcome to Node JS!'))
-    app.use('/api/v1', userRoutes);
-    app.use('/api/v1', tokenRoutes);
-    app.use('/api/v1', adminRoutes);
+    app.use('/api/v1', Object.values(routers));
 
     // error middleware
     app.use(ErrorMiddleware)
