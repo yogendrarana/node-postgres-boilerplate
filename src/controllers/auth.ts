@@ -66,13 +66,13 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
     // check if user exists in database
     const [user] = await db.select().from(userSchema).where(eq(userSchema.email, email));
     if (!user) {
-        return next(new ErrorHandler(404, "Invalid email or password."));
+        return next(new ErrorHandler(400, "Invalid email or password."));
     }
 
     // check of password matches
     const isCorrectPassword = await bcrypt.compare(password, user.password);
     if (!isCorrectPassword) {
-        return next(new ErrorHandler(404, "Invalid email or password."));
+        return next(new ErrorHandler(400, "Invalid email or password."));
     }
 
     // generate token
