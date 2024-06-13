@@ -1,5 +1,5 @@
 import pg from "pg";
-import { schemas } from "./index.js";
+import * as schema from "./schema/index.js";
 import { drizzle } from "drizzle-orm/node-postgres";
 
 const connectionString =
@@ -12,4 +12,4 @@ const pool = new pg.Pool({ connectionString });
 
 
 // create drizzle instance
-export const db = drizzle(pool, { schema: schemas });
+export const db = drizzle(pool, { schema });

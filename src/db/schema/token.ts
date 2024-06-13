@@ -8,7 +8,6 @@ import { userSchema } from "./user.js";
 // token type
 export const tokenEnum = pgEnum('type', ['refresh_token', 'otp']);
 
-
 export const tokenSchema = pgTable(
     "token",
 

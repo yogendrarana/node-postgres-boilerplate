@@ -12,7 +12,7 @@ export const productSchema = pgTable(
         id: uuid("id").primaryKey().unique().notNull().defaultRandom(),
         name: varchar("name", { length: 50 }).notNull(),
         description: text("description").notNull(),
-        price: decimal("price", { precision: 12, scale: 2 }).notNull(),
+        price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
         stock: integer("stock").notNull(),
         image: text("image").notNull(),
 
