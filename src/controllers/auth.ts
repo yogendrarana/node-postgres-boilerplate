@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
-import { db } from '../config/db/db.js';
+import { db } from '../db/index.js';
+import { userSchema } from '../db/schema/user.js';
 import * as tokenService from '../helpers/token.js'
+import { tokenSchema } from '../db/schema/token.js';
 import ErrorHandler from "../handlers/errorHandler.js";
-import { userSchema } from '../config/db/schema/user.js';
 import { NextFunction, Request, Response } from "express";
-import { tokenSchema } from '../config/db/schema/token.js';
 import { asyncHandler } from "../handlers/asyncHandler.js";
 import { loginUserSchema, registerUserSchema } from '../schemas/user.js';
 

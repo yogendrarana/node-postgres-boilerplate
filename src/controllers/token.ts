@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 import { eq } from "drizzle-orm";
-import { db } from "../config/db/db.js";
 import ErrorHandler from "../handlers/errorHandler.js";
 import { asyncHandler } from "../handlers/asyncHandler.js";
 import { NextFunction, Request, Response } from "express";
-import { userSchema } from "../config/db/schema/user.js";
-import { tokenSchema } from "../config/db/schema/token.js";
 import { createAccessToken, createRefreshToken } from "../helpers/token.js";
+import { db } from "../db/index.js";
+import { tokenSchema } from "../db/schema/token.js";
+import { userSchema } from "../db/schema/user.js";
 
 
 // issue new access token
