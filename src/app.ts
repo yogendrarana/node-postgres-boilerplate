@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
+import { startCronJobs } from "./config/cronjob.js";
 
 // import routes
 import routers from "./routes/index.js";
@@ -31,6 +32,9 @@ export default function createApp() {
     app.use(cookieParser())
     app.use(morganMiddleware)
     app.use(express.urlencoded({ extended: true }))
+
+    // cron jobs
+    startCronJobs();
 
     // routes
     app.get('/', (req, res) => res.send('Welcome to Node JS!'))

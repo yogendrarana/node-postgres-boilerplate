@@ -25,7 +25,7 @@ const allLogsTransport = new DailyRotateFile({
     maxFiles: '180d'
 });
 
-const winstonLogger = winston.createLogger({
+const WinstonLogger = winston.createLogger({
     level: level(),
     levels,
     format: combine(
@@ -41,4 +41,4 @@ const winstonLogger = winston.createLogger({
     ]
 });
 
-export default winstonLogger;
+export default WinstonLogger;
