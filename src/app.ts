@@ -1,4 +1,3 @@
-// All other imports below
 import path from "path";
 import express from "express";
 import * as Sentry from "@sentry/node";
@@ -25,12 +24,11 @@ export default function createExpressApp() {
     app.use(cookieParser())
     app.use(MorganMiddleware)
     app.use(express.urlencoded({ extended: true }))
+    app.use(Sentry.expressErrorHandler());
     
     // routes
     app.get('/', (req, res) => res.send('Welcome to Node JS!'))
     app.use('/api/v1', Object.values(routers));
-
-    Sentry.setupExpressErrorHandler(app);
 
     // error middleware
     app.use(ErrorMiddleware)

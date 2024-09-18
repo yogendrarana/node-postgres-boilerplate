@@ -14,3 +14,5 @@ export const configureSentry = () => {
         profilesSampleRate: 1.0,
     });
 }
+
+export default Sentry;
