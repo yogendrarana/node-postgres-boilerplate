@@ -1,6 +1,5 @@
 import path from "path";
 import express from "express";
-import * as Sentry from "@sentry/node";
 import cookieParser from "cookie-parser";
 import { __dirname } from "./util/path.js";
 
@@ -24,7 +23,6 @@ export default function createExpressApp() {
     app.use(cookieParser())
     app.use(MorganMiddleware)
     app.use(express.urlencoded({ extended: true }))
-    app.use(Sentry.expressErrorHandler());
     
     // routes
     app.get('/', (req, res) => res.send('Welcome to Node JS!'))

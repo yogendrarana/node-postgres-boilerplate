@@ -2,14 +2,12 @@ import dotenv from "dotenv";
 import http from "node:http";
 import path from "node:path";
 import { startCronJobs } from "./config/cronjob.js";
-import { configureSentry } from "./config/sentry.js";
 
 // .env
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 // config
 startCronJobs();
-configureSentry();
 
 // Import createExpressApp after Sentry is configured
 const { default: createExpressApp } = await import("./app.js");
