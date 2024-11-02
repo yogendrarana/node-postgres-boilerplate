@@ -5,7 +5,7 @@ const router = express.Router();
 import * as userControllers from "../controllers/user.js";
 
 // define routes
-router.route('/users').post(userControllers.getUsers);
+router.route('/users').get(userControllers.getUsers);
 
 // export router
 export default router;

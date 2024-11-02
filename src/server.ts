@@ -1,16 +1,15 @@
 import dotenv from "dotenv";
 import http from "node:http";
 import path from "node:path";
+import createExpressApp from "./app.js";
 import { startCronJobs } from "./config/cronjob.js";
+import createWebSocketServer from "./config/socket.js";
 
 // .env
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
 // config
 startCronJobs();
-
-// Import createExpressApp after Sentry is configured
-const { default: createExpressApp } = await import("./app.js");
 
 // create express app
 const app = createExpressApp();
@@ -18,6 +17,17 @@ const app = createExpressApp();
 // create server
 const PORT = process.env.PORT || 8000;
 const server = http.createServer(app);
+
+// Initialize WebSocket server and attach it to HTTP server
+const wsServer = createWebSocketServer({
+    path: "/ws",
+    pingInterval: 30000,
+    maxPayload: 50 * 1024
+});
+
+wsServer.initialize(server);
+
+// Start HTTP server
 server.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`)
-})
+    console.log(`HTTP Server running on port ${PORT}`);
+});
