@@ -1,17 +1,19 @@
-import type { Config } from 'drizzle-kit';
-
+import { defineConfig } from "drizzle-kit";
 
 const connectionString =
-    process.env.ENV === "production" ?
-        process.env.DB_URL :
-        'postgresql://postgres:password@localhost:5432/hobby';
+    process.env.DB_URL || "postgresql://postgres:password@localhost:5432/node-postgres-boilerplate";
 
-
-export default {
+export default defineConfig({
     dialect: "postgresql",
-    schema: "./dist/config/db/schema/*",
-    out: "./migrations",
+    schema: "./src/db/schema/*",
+    out: "./drizzle",
     dbCredentials: {
-        url: connectionString,
-    }
-} as Config;
+        url: connectionString
+    },
+    migrations: {
+        prefix: "timestamp",
+        table: "__drizzle_migrations",
+        schema: "public"
+    },
+    extensionsFilters: ["postgis"]
+});

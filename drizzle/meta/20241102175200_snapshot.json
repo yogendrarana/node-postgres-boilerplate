@@ -1,7 +1,7 @@
 {
-  "id": "3b36b481-be82-4ea6-b89c-a5af6c8c8a13",
+  "id": "756b8113-2bc0-4ae4-bf5c-2c9fee16c1c7",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.order": {
@@ -33,6 +33,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "order_items": {
+          "name": "order_items",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -59,57 +65,10 @@
             "id"
           ]
         }
-      }
-    },
-    "public.order_to_product": {
-      "name": "order_to_product",
-      "schema": "",
-      "columns": {
-        "order_id": {
-          "name": "order_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "quantity": {
-          "name": "quantity",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
       },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "order_to_product_order_id_product_id_pk": {
-          "name": "order_to_product_order_id_product_id_pk",
-          "columns": [
-            "order_id",
-            "product_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.product": {
       "name": "product",
@@ -136,9 +95,10 @@
         },
         "price": {
           "name": "price",
-          "type": "numeric(12, 2)",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'0'"
         },
         "stock": {
           "name": "stock",
@@ -178,7 +138,10 @@
             "id"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.token": {
       "name": "token",
@@ -236,7 +199,10 @@
             "id"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.user": {
       "name": "user",
@@ -308,7 +274,10 @@
             "email"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -330,6 +299,10 @@
     }
   },
   "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

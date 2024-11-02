@@ -1,58 +1,67 @@
-import bcrypt from 'bcrypt';
-import { eq } from 'drizzle-orm';
-import { db } from '../db/index.js';
-import { userSchema } from '../db/schema/user.js';
-import * as tokenService from '../helpers/token.js'
-import { tokenSchema } from '../db/schema/token.js';
+import bcrypt from "bcrypt";
+import { eq } from "drizzle-orm";
+import { db } from "../db/db.js";
+import { userSchema } from "../db/schema/user.js";
+import * as tokenService from "../helpers/token.js";
+import { tokenSchema } from "../db/schema/token.js";
 import ErrorHandler from "../handlers/errorHandler.js";
 import { NextFunction, Request, Response } from "express";
 import { asyncHandler } from "../handlers/asyncHandler.js";
-import { loginUserSchema, registerUserSchema } from '../schemas/user.js';
+import { loginUserSchema, registerUserSchema } from "../schemas/user.js";
 
 // registerUser
-export const registerUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password, confirm_password } = req.body;
+export const registerUser = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { email, password, confirm_password } = req.body;
 
-    const validate = await registerUserSchema.safeParse({ email, password, confirm_password });
-    if (!validate.success) {
-        return next(new ErrorHandler(400, validate.error.errors[0].message));
-    }
-
-    // check if user exists in database
-    const userExists = await db.select().from(userSchema).where(eq(userSchema.email, email));
-    if (userExists.length !== 0) {
-        return next(new ErrorHandler(400, "The email is already registered."));
-    }
-
-    // encrypt password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const [user] = await db.insert(userSchema)
-        .values({ email, password: hashedPassword })
-        .returning({ id: userSchema.id, name: userSchema.name, email: userSchema.email, role: userSchema.role });
-
-    // generate tokens
-    const accessToken = tokenService.createAccessToken(user.id);
-    const refreshToken = tokenService.createRefreshToken(user.id);
-
-    // save refresh token in database
-    await db.insert(tokenSchema).values([{ type: 'refresh_token', value: refreshToken, userId: user.id }]);
-    res.cookie('refreshToken', refreshToken, {
-        httpOnly: true, // client cannot access cookie
-        secure: true, // set to true if your using https
-        sameSite: 'none', // 'none' | 'lax' | 'strict'
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-
-    res.status(200).json({
-        success: true,
-        data: {
-            message: "Registered successfully.",
-            accessToken,
-            user
+        const validate = await registerUserSchema.safeParse({ email, password, confirm_password });
+        if (!validate.success) {
+            return next(new ErrorHandler(400, validate.error.errors[0].message));
         }
-    })
-});
 
+        // check if user exists in database
+        const userExists = await db.select().from(userSchema).where(eq(userSchema.email, email));
+        if (userExists.length !== 0) {
+            return next(new ErrorHandler(400, "The email is already registered."));
+        }
+
+        // encrypt password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const [user] = await db
+            .insert(userSchema)
+            .values({ email, password: hashedPassword })
+            .returning({
+                id: userSchema.id,
+                name: userSchema.name,
+                email: userSchema.email,
+                role: userSchema.role
+            });
+
+        // generate tokens
+        const accessToken = tokenService.createAccessToken(user.id);
+        const refreshToken = tokenService.createRefreshToken(user.id);
+
+        // save refresh token in database
+        await db
+            .insert(tokenSchema)
+            .values([{ type: "refresh_token", value: refreshToken, userId: user.id }]);
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true, // client cannot access cookie
+            secure: true, // set to true if your using https
+            sameSite: "none", // 'none' | 'lax' | 'strict'
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
+
+        res.status(200).json({
+            success: true,
+            data: {
+                message: "Registered successfully.",
+                accessToken,
+                user
+            }
+        });
+    }
+);
 
 // loginUser
 export const loginUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -80,13 +89,15 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
     const refreshToken = tokenService.createRefreshToken(user.id);
 
     // save refresh token in database
-    await db.insert(tokenSchema).values({ type: "refresh_token", value: refreshToken, userId: user.id });
+    await db
+        .insert(tokenSchema)
+        .values({ type: "refresh_token", value: refreshToken, userId: user.id });
 
     // set refresh token in cookie
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
         httpOnly: true, // client cannot access cookie
         secure: true, // set to true if your using https
-        sameSite: 'none', // 'none' | 'lax' | 'strict'
+        sameSite: "none", // 'none' | 'lax' | 'strict'
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -97,9 +108,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
             accessToken,
             user
         }
-    })
+    });
 });
-
 
 // logoutUser
 export const logoutUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -116,7 +126,7 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response, next:
         with: {
             user: true
         }
-    })
+    });
 
     if (!foundRefreshToken) {
         return next(new ErrorHandler(400, "Please login first to logout."));
@@ -131,11 +141,11 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response, next:
     await db.delete(tokenSchema).where(eq(tokenSchema.value, refreshToken));
 
     // clear cookie
-    res.clearCookie('refreshToken');
+    res.clearCookie("refreshToken");
     res.status(200).json({
         success: true,
         data: {
-            message: "Logged out successfully.",
+            message: "Logged out successfully."
         }
-    })
+    });
 });

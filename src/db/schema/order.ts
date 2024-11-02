@@ -1,10 +1,9 @@
 import { relations } from "drizzle-orm";
 import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
-import { integer, numeric, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { integer, jsonb, numeric, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 // import schemas
-import { userSchema } from "./user.js";
-import { orderToProductSchema } from "./order.to.product.js";
+import { userSchema } from "./user";
 
 // define schema
 export const orderSchema = pgTable(
@@ -15,20 +14,18 @@ export const orderSchema = pgTable(
         customerId: integer("customer_id").notNull(),
         totalAmount: numeric("total_amount").notNull(),
         status: text("status").notNull(),
+        orderItems: jsonb("order_items").notNull(),
 
         createdAt: timestamp("created_at").defaultNow().notNull(),
-        updatedAt: timestamp("updated_at").defaultNow().notNull(),
-    },
-)
-
+        updatedAt: timestamp("updated_at").defaultNow().notNull()
+    }
+);
 
 // define relationships
-export const orderRelations = relations(orderSchema, ({ many, one }) => ({
-    customer: one(userSchema, { fields: [orderSchema.customerId], references: [userSchema.id] }),
-    ordersToProducts: many(orderToProductSchema)
-}))
-
+export const orderRelations = relations(orderSchema, ({ one }) => ({
+    customer: one(userSchema, { fields: [orderSchema.customerId], references: [userSchema.id] })
+}));
 
 // export types
-export type SelectOrder = InferSelectModel<typeof orderSchema>
-export type InsertOrder = InferInsertModel<typeof orderSchema>
+export type SelectableOrder = InferSelectModel<typeof orderSchema>;
+export type InsertableOrder = InferInsertModel<typeof orderSchema>;
