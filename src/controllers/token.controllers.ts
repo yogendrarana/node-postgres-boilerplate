@@ -6,7 +6,7 @@ import { tokenSchema } from "../db/schema/token.js";
 import ErrorHandler from "../handlers/errorHandler.js";
 import { asyncHandler } from "../handlers/asyncHandler.js";
 import { NextFunction, Request, Response } from "express";
-import { createAccessToken, createRefreshToken } from "../helpers/token.js";
+import { createAccessToken, createRefreshToken } from "../helpers/token.helpers.js";
 
 // issue new access token
 export const issuseNewAccessToken = asyncHandler(

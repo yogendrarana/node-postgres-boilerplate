@@ -7,8 +7,8 @@ import { __dirname } from "./util/path.js";
 import routers from "./routes/index.js";
 
 // middlewares
-import ErrorMiddleware from "./middlewares/error.js";
-import MorganMiddleware from "./middlewares/morgan.js";
+import ErrorMiddleware from "./middlewares/error.middlewares.js";
+import MorganMiddleware from "./middlewares/morgan.middlewares.js";
 
 export default function createExpressApp() {
     const app = express();

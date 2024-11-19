@@ -1,7 +1,7 @@
-import authRouter from "./auth.js";
-import tokenRouter from "./token.js";
-import adminRouter from "./admin.js";
-import userRouter from "./user.js";
+import authRouter from "./auth.routes.js";
+import userRouter from "./user.routes.js";
+import adminRouter from "./admin.routes.js";
+import tokenRouter from "./token.routes.js";
 
 const routers = {
     authRouter,

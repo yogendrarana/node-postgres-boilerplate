@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-type ExpressRouteHandler = (req: Request, res: Response, next: NextFunction) => Promise<any>
+type ExpressRouteHandler = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 
 export const asyncHandler = (passedFunction: ExpressRouteHandler) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -9,5 +9,5 @@ export const asyncHandler = (passedFunction: ExpressRouteHandler) => {
         } catch (err) {
             next(err);
         }
-    }
-}
+    };
+};

@@ -2,11 +2,12 @@ import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { userSchema } from "../db/schema/user.js";
-import * as tokenService from "../helpers/token.js";
 import { tokenSchema } from "../db/schema/token.js";
 import ErrorHandler from "../handlers/errorHandler.js";
+import { TOKEN_TYPE } from "../constants/enum/index.js";
 import { NextFunction, Request, Response } from "express";
 import { asyncHandler } from "../handlers/asyncHandler.js";
+import * as tokenHelpers from "../helpers/token.helpers.js";
 import { loginUserSchema, registerUserSchema } from "../schemas/user.js";
 
 // registerUser
@@ -22,7 +23,7 @@ export const registerUser = asyncHandler(
         // check if user exists in database
         const userExists = await db.select().from(userSchema).where(eq(userSchema.email, email));
         if (userExists.length !== 0) {
-            return next(new ErrorHandler(400, "The email is already registered."));
+            return next(new ErrorHandler(400, "The email is already registered. Please login."));
         }
 
         // encrypt password
@@ -38,21 +39,22 @@ export const registerUser = asyncHandler(
             });
 
         // generate tokens
-        const accessToken = tokenService.createAccessToken(user.id);
-        const refreshToken = tokenService.createRefreshToken(user.id);
+        const accessToken = tokenHelpers.createAccessToken(user.id);
+        const refreshToken = tokenHelpers.createRefreshToken(user.id);
 
         // save refresh token in database
         await db
             .insert(tokenSchema)
-            .values([{ type: "refresh_token", value: refreshToken, userId: user.id }]);
+            .values([{ type: TOKEN_TYPE.REFRESH_TOKEN, value: refreshToken, userId: user.id }]);
+
         res.cookie("refreshToken", refreshToken, {
-            httpOnly: true, // client cannot access cookie
-            secure: true, // set to true if your using https
-            sameSite: "none", // 'none' | 'lax' | 'strict'
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             data: {
                 message: "Registered successfully.",
@@ -85,8 +87,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
     }
 
     // generate token
-    const accessToken = tokenService.createAccessToken(user.id);
-    const refreshToken = tokenService.createRefreshToken(user.id);
+    const accessToken = tokenHelpers.createAccessToken(user.id);
+    const refreshToken = tokenHelpers.createRefreshToken(user.id);
 
     // save refresh token in database
     await db

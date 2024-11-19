@@ -2,7 +2,7 @@ import express from "express"
 const router = express.Router();
 
 // import controllers and middlewares
-import * as tokenController from "../controllers/token.js";
+import * as tokenController from "../controllers/token.controllers.js";
 
 
 // define routes
