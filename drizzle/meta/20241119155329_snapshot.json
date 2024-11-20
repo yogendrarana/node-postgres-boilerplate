@@ -1,5 +1,5 @@
 {
-  "id": "756b8113-2bc0-4ae4-bf5c-2c9fee16c1c7",
+  "id": "142fd90f-d0f2-4ed0-ba9a-dcd7a51f36e7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -168,7 +168,7 @@
         },
         "type": {
           "name": "type",
-          "type": "type",
+          "type": "token_type",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -281,8 +281,8 @@
     }
   },
   "enums": {
-    "public.type": {
-      "name": "type",
+    "public.token_type": {
+      "name": "token_type",
       "schema": "public",
       "values": [
         "refresh_token",

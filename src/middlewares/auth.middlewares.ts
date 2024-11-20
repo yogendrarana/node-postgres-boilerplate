@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
 import ErrorHandler from "../handlers/errorHandler.js";
 import { NextFunction, Request, Response } from "express";
-import { userSchema } from "../db/schema/user.js";
+import { userSchema } from "../db/schema/user.schema.js";
 
 // Define a custom interface that extends the Express Request interface
 interface CustomRequest extends Request {

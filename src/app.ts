@@ -25,7 +25,7 @@ export default function createExpressApp() {
     app.use(express.urlencoded({ extended: true }))
     
     // routes
-    app.get('/', (req, res) => res.send('Welcome to Node JS!'))
+    app.get('/', (_, res) => res.send('Welcome to Node JS!'))
     app.use('/api/v1', Object.values(routers));
 
     // error middleware

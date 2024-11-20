@@ -1,4 +1,4 @@
-CREATE TYPE "public"."type" AS ENUM('refresh_token', 'otp');--> statement-breakpoint
+CREATE TYPE "public"."token_type" AS ENUM('refresh_token', 'otp');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('user', 'admin');--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "order" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "token" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
 	"token" text NOT NULL,
-	"type" "type" NOT NULL,
+	"type" "token_type" NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "token_id_unique" UNIQUE("id")

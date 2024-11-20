@@ -2,7 +2,7 @@ import { pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-
 import { relations, type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 
 // import schemas
-import { tokenSchema } from "./token";
+import { tokenSchema } from "./token.schema";
 
 // role
 export const roleEnum = pgEnum("role", ["user", "admin"]);

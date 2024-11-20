@@ -13,7 +13,6 @@ export async function runMigrate() {
 }
 
 runMigrate().catch((err) => {
-    console.error("❌ Migration failed");
-    console.error("Error message:", err.message);
+    console.error("❌ Migration failed with error message: ", err.message);
     process.exit(1);
 });

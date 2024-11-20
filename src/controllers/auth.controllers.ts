@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
-import { userSchema } from "../db/schema/user.js";
-import { tokenSchema } from "../db/schema/token.js";
+import { userSchema } from "../db/schema/user.schema.js";
+import { tokenSchema } from "../db/schema/token.schema.js";
 import ErrorHandler from "../handlers/errorHandler.js";
 import { TOKEN_TYPE } from "../constants/enum/index.js";
 import { NextFunction, Request, Response } from "express";
 import { asyncHandler } from "../handlers/asyncHandler.js";
-import * as tokenHelpers from "../helpers/token.helpers.js";
+import * as tokenServices from "../service/token.services.js";
 import { loginUserSchema, registerUserSchema } from "../schemas/user.js";
 
 // registerUser
@@ -19,13 +19,13 @@ export const registerUser = asyncHandler(
         if (!validate.success) {
             return next(new ErrorHandler(400, validate.error.errors[0].message));
         }
-
+        
         // check if user exists in database
         const userExists = await db.select().from(userSchema).where(eq(userSchema.email, email));
         if (userExists.length !== 0) {
             return next(new ErrorHandler(400, "The email is already registered. Please login."));
         }
-
+        
         // encrypt password
         const hashedPassword = await bcrypt.hash(password, 10);
         const [user] = await db
@@ -39,8 +39,8 @@ export const registerUser = asyncHandler(
             });
 
         // generate tokens
-        const accessToken = tokenHelpers.createAccessToken(user.id);
-        const refreshToken = tokenHelpers.createRefreshToken(user.id);
+        const accessToken = tokenServices.createAccessToken(user.id);
+        const refreshToken = tokenServices.createRefreshToken(user.id);
 
         // save refresh token in database
         await db
@@ -53,6 +53,7 @@ export const registerUser = asyncHandler(
             sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
+
 
         res.status(201).json({
             success: true,
@@ -87,8 +88,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
     }
 
     // generate token
-    const accessToken = tokenHelpers.createAccessToken(user.id);
-    const refreshToken = tokenHelpers.createRefreshToken(user.id);
+    const accessToken = tokenServices.createAccessToken(user.id);
+    const refreshToken = tokenServices.createRefreshToken(user.id);
 
     // save refresh token in database
     await db
