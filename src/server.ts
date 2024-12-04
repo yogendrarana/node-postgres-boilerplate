@@ -5,7 +5,6 @@ import createExpressApp from "./app.js";
 import { startCronJobs } from "./config/cronjob.js";
 import createWebSocketServer from "./config/socket.js";
 
-
 // .env
 dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 

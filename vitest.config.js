@@ -8,6 +8,7 @@ export default defineConfig({
         coverage: {
             reporter: ["text", "html"]
         },
-        include: ["**/*.test.ts"]
+        include: ["**/*.test.ts"],
+        globalSetup: ["./test/setup.ts"]
     }
 });
