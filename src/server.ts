@@ -27,7 +27,7 @@ const wsServer = createWebSocketServer({
 
 wsServer.initialize(server);
 
-// Start HTTP server
+// Start server
 server.listen(PORT, () => {
     console.log(`HTTP Server running on port ${PORT}`);
 });
