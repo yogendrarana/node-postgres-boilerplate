@@ -3,7 +3,7 @@ import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid, pgEnum } from "drizzle-orm/pg-core";
 
 // import schemas
-import { userSchema } from "./user.schema";
+import { userSchema } from "./user.schema.js";
 
 // token type
 export const tokenEnum = pgEnum("token_type", ["refresh_token", "otp"]);

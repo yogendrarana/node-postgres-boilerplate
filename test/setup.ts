@@ -1,11 +1,13 @@
 import pg from "pg";
 import dotenv from "dotenv";
 import path from "node:path";
-import * as schema from "../src/db/schema";
 import { afterAll, beforeAll } from "vitest";
+import * as schema from "../src/db/schema.js";
+import { getTableName, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { validateTestDatabase } from "../src/service/db.services";
+import { validateTestDatabase } from "../src/service/db.services.js";
+
 
 // load env variables
 dotenv.config({ path: path.resolve(process.cwd(), ".env") });
@@ -40,3 +42,20 @@ afterAll(async () => {
     await testDbPool.end();
     console.log("✓ Database connection closed");
 });
+
+// helper function to truncate tables
+export const truncateTables = async (tableNames?: string[]) => {
+    const allTableNames = Object.values(schema)
+        .map((item) => getTableName(item as any))
+        .filter((name): name is string => name !== undefined);
+
+    const tablesToTruncate = tableNames || allTableNames;
+
+    for (const tableName of tablesToTruncate) {
+        try {
+            await testDb.execute(sql`TRUNCATE TABLE ${sql.identifier(tableName)} CASCADE`);
+        } catch (error) {
+            console.error(`Failed to truncate table ${tableName}:`, error);
+        }
+    }
+};

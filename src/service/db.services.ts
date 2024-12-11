@@ -1,7 +1,4 @@
-import * as schema from "../db/schema";
-import { getTableName, sql } from "drizzle-orm";
 import { APP_ENV } from "../constants/env.js";
-import { testDb } from "../../test/setup.js";
 
 // get database url
 export function getDbUrl() {
@@ -48,22 +45,5 @@ export const validateTestDatabase = (dbUrl: string) => {
             Please check your TEST_DB_URL environment variable.
             `);
         process.exit(1);
-    }
-};
-
-// helper function to truncate tables
-export const truncateTables = async (tableNames?: string[]) => {
-    const allTableNames = Object.values(schema)
-        .map((item) => getTableName(item as any))
-        .filter((name): name is string => name !== undefined);
-
-    const tablesToTruncate = tableNames || allTableNames;
-
-    for (const tableName of tablesToTruncate) {
-        try {
-            await testDb.execute(sql`TRUNCATE TABLE ${sql.identifier(tableName)} CASCADE`);
-        } catch (error) {
-            console.error(`Failed to truncate table ${tableName}:`, error);
-        }
     }
 };
