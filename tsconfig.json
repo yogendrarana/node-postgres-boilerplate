@@ -9,28 +9,25 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-
     /* If transpiling with TypeScript: */
-    "module": "NodeNext",
     "outDir": "dist",
-
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     // other options
-    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "rootDir": "./",
   },
   "include": [
     "src/**/*.ts",
-    "test/**/*.ts"
   ],
   "exclude": [
+    "dist",
     "node_modules",
-    "dist"
+    "test/**/*.ts"
   ]
 }

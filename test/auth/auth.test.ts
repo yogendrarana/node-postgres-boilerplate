@@ -1,7 +1,7 @@
 import supertest from "supertest";
-import createApp from "../src/app.js";
+import createApp from "../../src/app.js";
 import { expect, describe, it, beforeEach } from "vitest";
-import { truncateTables } from "../src/service/db.services.js";
+import { truncateTables } from "../../src/service/db.services.js";
 
 const app = createApp();
 const request = supertest(app);

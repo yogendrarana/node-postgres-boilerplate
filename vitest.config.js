@@ -9,6 +9,5 @@ export default defineConfig({
             reporter: ["text", "html"]
         },
         include: ["**/*.test.ts"],
-        globalSetup: ["./test/setup.ts"]
     }
 });
