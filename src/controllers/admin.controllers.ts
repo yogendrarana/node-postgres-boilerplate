@@ -1,9 +1,9 @@
-import { Response } from "express";
+import type { Response } from "express";
 import { asyncHandler } from "../handlers/asyncHandler.js";
-import { AuthenticatedRequest } from "../types/index.js";
+import type { AuthenticatedRequest } from "../types/auth.types.js";
 
 export const getDashboardData = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
-    console.log(req.user)
+    console.log(req.user);
 
     res.status(200).json({
         success: true,
@@ -13,5 +13,5 @@ export const getDashboardData = asyncHandler(async (req: AuthenticatedRequest, r
             products: 20,
             orders: 30
         }
-    })
-})
+    });
+});

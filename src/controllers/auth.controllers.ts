@@ -5,7 +5,7 @@ import { userSchema } from "../db/schema/user.schema.js";
 import { tokenSchema } from "../db/schema/token.schema.js";
 import ErrorHandler from "../handlers/errorHandler.js";
 import { TOKEN_TYPE } from "../constants/enum/index.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { asyncHandler } from "../handlers/asyncHandler.js";
 import * as tokenServices from "../service/token.services.js";
 import { loginUserSchema, registerUserSchema } from "../schemas/user.js";
@@ -17,15 +17,16 @@ export const registerUser = asyncHandler(
 
         const validate = await registerUserSchema.safeParse({ email, password, confirm_password });
         if (!validate.success) {
-            return next(new ErrorHandler(400, validate.error.errors[0].message));
+            const errorMessage = validate.error.errors[0]?.message || "Validation error";
+            return next(new ErrorHandler(400, errorMessage));
         }
-        
+
         // check if user exists in database
-        const userExists = await db.select().from(userSchema).where(eq(userSchema.email, email));
-        if (userExists.length !== 0) {
+        const existingUser = await db.select().from(userSchema).where(eq(userSchema.email, email));
+        if (existingUser.length !== 0) {
             return next(new ErrorHandler(400, "The email is already registered. Please login."));
         }
-        
+
         // encrypt password
         const hashedPassword = await bcrypt.hash(password, 10);
         const [user] = await db
@@ -37,6 +38,10 @@ export const registerUser = asyncHandler(
                 email: userSchema.email,
                 role: userSchema.role
             });
+
+        if (!user) {
+            return next(new ErrorHandler(500, "User registration failed."));
+        }
 
         // generate tokens
         const accessToken = tokenServices.createAccessToken(user.id);
@@ -53,7 +58,6 @@ export const registerUser = asyncHandler(
             sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
-
 
         res.status(201).json({
             success: true,
@@ -72,7 +76,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
 
     const validate = await loginUserSchema.safeParse({ email, password });
     if (!validate.success) {
-        return next(new ErrorHandler(400, validate.error.errors[0].message));
+        const errorMessage = validate.error.errors[0]?.message || "Validation error";
+        return next(new ErrorHandler(400, errorMessage));
     }
 
     // check if user exists in database

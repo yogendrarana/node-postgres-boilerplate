@@ -1,7 +1,6 @@
-import { Request } from "express";
-
+import type { Request } from "express";
 
 // authenticated request type
 export type AuthenticatedRequest = Request & {
     user?: any;
-}
+};

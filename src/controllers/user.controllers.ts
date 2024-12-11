@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { asyncHandler } from "../handlers/asyncHandler.js";
 
 export const getUsers = asyncHandler(async (req: Request, res: Response) => {

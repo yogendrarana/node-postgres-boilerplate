@@ -1,6 +1,6 @@
-import { Response, NextFunction } from "express";
+import type { NextFunction, Response } from "express";
 import ErrorHandler from "../handlers/errorHandler.js";
-import { AuthenticatedRequest } from "../types/index.js";
+import type { AuthenticatedRequest } from "../types/auth.js";
 
 export const verifyAdminRole = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     if (!req.user || req.user.role !== "admin") {

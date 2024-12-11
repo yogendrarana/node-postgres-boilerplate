@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ErrorMiddleware = (err: any, req: Request, res: Response, next:NextFunction) => {

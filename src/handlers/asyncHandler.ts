@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 type ExpressRouteHandler = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 

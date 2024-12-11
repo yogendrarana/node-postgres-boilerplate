@@ -5,7 +5,7 @@ import { userSchema } from "../db/schema/user.schema.js";
 import { tokenSchema } from "../db/schema/token.schema.js";
 import ErrorHandler from "../handlers/errorHandler.js";
 import { asyncHandler } from "../handlers/asyncHandler.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { createAccessToken, createRefreshToken } from "../service/token.services.js";
 
 // issue new access token
