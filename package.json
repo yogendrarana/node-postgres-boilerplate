@@ -1,5 +1,5 @@
 {
-  "name": "node-postgres-boilerplate",
+  "name": "node-express-postgres",
   "version": "1.0.0",
   "description": "A boilerplate project for Node.js, Express, PostgreSQL, Drizzle ORM, and Vitest",
   "type": "module",
