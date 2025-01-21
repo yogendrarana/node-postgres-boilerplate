@@ -1,10 +1,8 @@
 import path from "path";
 import express from "express";
+import routers from "./routers.js";
 import cookieParser from "cookie-parser";
 import { __dirname } from "./util/path.js";
-
-// routes
-import routers from "./routes/index.js";
 
 // middlewares
 import ErrorMiddleware from "./middlewares/error.middlewares.js";
@@ -14,22 +12,22 @@ export default function createExpressApp() {
     const app = express();
 
     // set view engine
-    app.set('view engine', 'ejs');
-    app.set('views', 'views');
-    app.use(express.static(path.join(__dirname, './public')));
+    app.set("view engine", "ejs");
+    app.set("views", "views");
+    app.use(express.static(path.join(__dirname, "./public")));
 
     // middleware
-    app.use(express.json())
-    app.use(cookieParser())
-    app.use(MorganMiddleware)
-    app.use(express.urlencoded({ extended: true }))
-    
+    app.use(express.json());
+    app.use(cookieParser());
+    app.use(MorganMiddleware);
+    app.use(express.urlencoded({ extended: true }));
+
     // routes
-    app.get('/', (_, res) => res.send('Welcome to Node JS!'))
-    app.use('/api/v1', Object.values(routers));
+    app.get("/", (_, res) => res.send("Welcome to Node JS!"));
+    app.use("/api/v1", Object.values(routers));
 
     // error middleware
-    app.use(ErrorMiddleware)
+    app.use(ErrorMiddleware);
 
     return app;
 }
