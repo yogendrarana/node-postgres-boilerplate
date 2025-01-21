@@ -3,10 +3,10 @@ import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { userSchema } from "../db/schema/user.schema.js";
 import { tokenSchema } from "../db/schema/token.schema.js";
-import ErrorHandler from "../handlers/errorHandler.js";
-import { asyncHandler } from "../handlers/asyncHandler.js";
+import ErrorHandler from "../helpers/error.helpers.js";
+import { asyncHandler } from "../helpers/async.helpers.js";
 import type { NextFunction, Request, Response } from "express";
-import { createAccessToken, createRefreshToken } from "../service/token.services.js";
+import { createAccessToken, createRefreshToken } from "../helpers/token.helpers.js";
 
 // issue new access token
 export const issuseNewAccessToken = asyncHandler(

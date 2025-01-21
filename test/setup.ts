@@ -6,7 +6,7 @@ import * as schema from "../src/db/schema.js";
 import { getTableName, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { validateTestDatabase } from "../src/service/db.services.js";
+import { validateTestDatabase } from "../src/helpers/db.helpers.js";
 
 
 // load env variables

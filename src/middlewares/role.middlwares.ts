@@ -1,5 +1,5 @@
 import type { NextFunction, Response } from "express";
-import ErrorHandler from "../handlers/errorHandler.js";
+import ErrorHandler from "../helpers/error.helpers.js";
 import type { AuthenticatedRequest } from "../types/auth.types.js";
 
 export const verifyAdminRole = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {

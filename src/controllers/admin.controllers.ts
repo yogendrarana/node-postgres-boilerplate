@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import { asyncHandler } from "../handlers/asyncHandler.js";
+import { asyncHandler } from "../helpers/async.helpers.js";
 import type { AuthenticatedRequest } from "../types/auth.types.js";
 
 export const getDashboardData = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
