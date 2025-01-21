@@ -1,8 +1,6 @@
+import { tokenSchema } from "./token.schema.js";
 import { pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { relations, type InferSelectModel, type InferInsertModel } from "drizzle-orm";
-
-// import schemas
-import { tokenSchema } from "./token.schema.js";
 
 // role
 export const roleEnum = pgEnum("role", ["user", "admin"]);

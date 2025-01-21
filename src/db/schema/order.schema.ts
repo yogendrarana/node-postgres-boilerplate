@@ -1,11 +1,9 @@
 import { relations } from "drizzle-orm";
+import { userSchema } from "./user.schema.js";
 import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 import { integer, jsonb, numeric, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-// import schemas
-import { userSchema } from "./user.schema.js";
-
-// define schema
+// schema definition
 export const orderSchema = pgTable(
     "order",
 

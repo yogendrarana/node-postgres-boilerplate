@@ -1,13 +1,12 @@
 import { relations } from "drizzle-orm";
+import { userSchema } from "./user.schema.js";
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid, pgEnum } from "drizzle-orm/pg-core";
-
-// import schemas
-import { userSchema } from "./user.schema.js";
 
 // token type
 export const tokenEnum = pgEnum("token_type", ["refresh_token", "otp"]);
 
+// schema definition
 export const tokenSchema = pgTable(
     "token",
 
@@ -28,5 +27,5 @@ export const tokenRelations = relations(tokenSchema, ({ one }) => ({
 }));
 
 // export the types
-export type SelectRefreshToken = InferSelectModel<typeof tokenSchema>;
-export type InsertRefreshToken = InferInsertModel<typeof tokenSchema>;
+export type SelectableToken = InferSelectModel<typeof tokenSchema>;
+export type InsertableToken = InferInsertModel<typeof tokenSchema>;
