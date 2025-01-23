@@ -54,7 +54,7 @@ export const registerUser = asyncHandler(
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+            maxAge: 30 * 24 * 60 * 60 * 1000 // 7 days
         });
 
         res.status(201).json({
@@ -84,6 +84,10 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
         return next(new ErrorHandler(400, "Invalid email or password."));
     }
 
+    if (!user.password) {
+        return next(new ErrorHandler(400, "No password found. Please login with Google."));
+    }
+
     // check of password matches
     const isCorrectPassword = await bcrypt.compare(password, user.password);
     if (!isCorrectPassword) {
@@ -102,15 +106,18 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
         httpOnly: true, // client cannot access cookie
         secure: true, // set to true if your using https
         sameSite: "none", // 'none' | 'lax' | 'strict'
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 7 days
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: userPassword, createdAt, updatedAt, ...rest } = user;
 
     res.status(200).json({
         success: true,
         message: "Logged in successfully.",
         data: {
             accessToken,
-            user
+            user: rest
         }
     });
 });
@@ -195,7 +202,7 @@ export const refreshAccessToken = asyncHandler(
                     httpOnly: true,
                     secure: true,
                     sameSite: "none",
-                    maxAge: 7 * 24 * 60 * 60 * 1000
+                    maxAge: 30 * 24 * 60 * 60 * 1000
                 });
 
                 res.status(200).json({
@@ -208,5 +215,45 @@ export const refreshAccessToken = asyncHandler(
                 });
             }
         );
+    }
+);
+
+// google auth callback
+export const googleAuthCallback = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const user = req.user as any;
+
+        if (!user) {
+            return next(new ErrorHandler(401, "Google authentication failed."));
+        }
+
+        // Generate tokens
+        const accessToken = createAccessToken(user.id, user.role);
+        const refreshToken = createRefreshToken(user.id, user.role);
+
+        // Save refresh token in the database
+        await insertToken({
+            type: TOKEN_TYPE.REFRESH_TOKEN,
+            value: refreshToken,
+            userId: user.id
+        });
+
+        // Set refresh token in cookies
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 30 * 24 * 60 * 60 * 1000
+        });
+
+        // Respond with access token and user data
+        res.status(200).json({
+            success: true,
+            message: "Authenticated successfully with Google.",
+            data: {
+                accessToken,
+                user
+            }
+        });
     }
 );

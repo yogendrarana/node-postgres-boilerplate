@@ -5,12 +5,12 @@ import { eq } from "drizzle-orm";
 
 // create access token
 export const createAccessToken = function (userId: string, userRole: string) {
-    return jwt.sign({ userId, userRole }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: "1m" });
+    return jwt.sign({ userId, userRole }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: "15m" });
 };
 
 // create refresh token of random uuid
 export const createRefreshToken = function (userId: string, userRole: string) {
-    return jwt.sign({ userId, userRole }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: "1d" });
+    return jwt.sign({ userId, userRole }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: "30d" });
 };
 
 // insert token

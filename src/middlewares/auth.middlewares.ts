@@ -1,16 +1,19 @@
 import jwt from "jsonwebtoken";
+import passport from "passport";
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
 import ErrorHandler from "../helpers/error.helpers.js";
-import type { NextFunction, Request, Response } from "express";
 import { userSchema } from "../db/schema/user.schema.js";
+import type { NextFunction, Request, Response } from "express";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { getUserByEmail, getUserById, insertUser } from "../helpers/user.helpers.js";
 
 // Define a custom interface that extends the Express Request interface
-interface CustomRequest extends Request {
+interface AuthenticatedRequest extends Request {
     user?: any;
 }
 
-export const verifyAccessToken = (req: CustomRequest, res: Response, next: NextFunction) => {
+export const verifyAccessToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization || req.headers.Authoriztion;
     if (!authHeader || !(authHeader as string).startsWith("Bearer ")) {
         throw new ErrorHandler(401, "Bearer token is not available!");
@@ -42,10 +45,62 @@ export const verifyAccessToken = (req: CustomRequest, res: Response, next: NextF
             );
         }
 
-        // set user in request
         req.user = user;
-
-        // call next middleware
         next();
+    });
+};
+
+// passport google oauth2.0 strategy
+export const initializeGoogleOAuth2 = () => {
+    passport.use(
+        new GoogleStrategy(
+            {
+                clientID: process.env.GOOGLE_CLIENT_ID!,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+                callbackURL: `${process.env.SERVER_URL!}/auth/google/callback`,
+                passReqToCallback: true,
+                scope: ["profile", "email"]
+            },
+            async (req, accessToken, refreshToken, profile, done) => {
+                const googleId = profile.id;
+                const name = profile.displayName;
+                const email = profile.emails?.[0]?.value;
+                if (!email) {
+                    return done(new Error("No email found in Google profile"));
+                }
+
+                try {
+                    // check if user already exists
+                    let user = await getUserByEmail(email);
+
+                    if (!user) {
+                        user = await insertUser({
+                            name,
+                            email,
+                            googleId
+                        });
+                    }
+
+                    return done(null, user);
+                } catch (err) {
+                    return done(err, undefined);
+                }
+            }
+        )
+    );
+
+    // serialize user
+    passport.serializeUser((user: any, done) => {
+        done(null, user.id);
+    });
+
+    // deserialize user
+    passport.deserializeUser(async (id: string, done) => {
+        try {
+            const user = await getUserById(id);
+            done(null, user);
+        } catch (err) {
+            done(err, null);
+        }
     });
 };

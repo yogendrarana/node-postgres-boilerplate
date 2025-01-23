@@ -13,8 +13,9 @@ export const userSchema = pgTable(
         id: uuid("id").primaryKey().unique().notNull().defaultRandom(),
         name: varchar("name", { length: 50 }),
         email: varchar("email", { length: 255 }).notNull().unique(),
-        password: text("password").notNull(),
+        password: text("password"),
         role: roleEnum("role").notNull().default("user"),
+        googleId: varchar("googleId", { length: 255 }),
 
         createdAt: timestamp("created_at").notNull().defaultNow(),
         updatedAt: timestamp("updated_at").notNull().defaultNow()
