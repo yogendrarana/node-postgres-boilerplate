@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import http from "node:http";
 import path from "node:path";
-import createExpressApp from "./app.js";
+import { createExpressApp } from "./app.js";
 import { startCronJobs } from "./config/cronjob.js";
 import createWebSocketServer from "./config/socket.js";
 

@@ -8,7 +8,7 @@ import { __dirname } from "./util/path.js";
 import ErrorMiddleware from "./middlewares/error.middlewares.js";
 import MorganMiddleware from "./middlewares/morgan.middlewares.js";
 
-export default function createExpressApp() {
+export const createExpressApp = () => {
     const app = express();
 
     // set view engine
@@ -30,4 +30,4 @@ export default function createExpressApp() {
     app.use(ErrorMiddleware);
 
     return app;
-}
+};

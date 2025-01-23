@@ -1,9 +1,9 @@
 import supertest from "supertest";
-import createApp from "../../src/app.js";
-import { expect, describe, it, beforeEach } from "vitest";
+import { createExpressApp } from "../../src/app.js";
 import { truncateTables } from "../../test/setup.js";
+import { expect, describe, it, beforeEach } from "vitest";
 
-const app = createApp();
+const app = createExpressApp();
 const request = supertest(app);
 
 describe("auth", () => {
