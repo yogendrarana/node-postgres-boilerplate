@@ -5,7 +5,7 @@ const connectionString =
 
 export default defineConfig({
     dialect: "postgresql",
-    schema: "./src/db/schema/*",
+    schema: "./dist/src/db/schema/*",
     out: "./drizzle",
     dbCredentials: {
         url: connectionString
