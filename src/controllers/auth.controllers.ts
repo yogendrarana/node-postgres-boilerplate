@@ -54,7 +54,7 @@ export const registerUser = asyncHandler(
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 7 days
+            maxAge: 30 * 24 * 60 * 60 * 1000
         });
 
         res.status(201).json({
@@ -78,19 +78,10 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
         return next(new ErrorHandler(400, errorMessage));
     }
 
-    // check if user exists in database
     const user = await getUserByEmail(email);
-    if (!user) {
-        return next(new ErrorHandler(400, "Invalid email or password."));
-    }
-
-    if (!user.password) {
-        return next(new ErrorHandler(400, "No password found. Please login with Google."));
-    }
-
-    // check of password matches
-    const isCorrectPassword = await bcrypt.compare(password, user.password);
-    if (!isCorrectPassword) {
+    const isCorrectPassword = await bcrypt.compare(password, user?.password || "");
+    if (!user || !isCorrectPassword) {
+        req.failedLoginAttempts = (req.failedLoginAttempts || 0) + 1;
         return next(new ErrorHandler(400, "Invalid email or password."));
     }
 
